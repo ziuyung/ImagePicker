@@ -130,7 +130,28 @@ static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
     
     //Register for changes
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+
+    [self performSelector:@selector(initFirst) withObject:nil afterDelay:0.1f];
 }
+
+-(void)initFirst
+{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    //Init the GMGridViewController
+    GMGridViewController *gridViewController = [[GMGridViewController alloc] initWithPicker:[self picker]];
+    //Set the title
+    gridViewController.title = cell.textLabel.text;
+    //Use the prefetched assets!
+     gridViewController.assetsFetchResults = [[_collectionsFetchResultsAssets objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    gridViewController.dic_asset_fetches = dic_asset_fetches;
+    
+    //Push GMGridViewController
+    [self.navigationController pushViewController:gridViewController animated:NO];
+    
+}
+
 
 - (void)dealloc
 {
