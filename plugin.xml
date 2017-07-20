@@ -72,13 +72,8 @@
         <resource-file src="src/ios/GMImagePicker/GMVideoIcon.png" />
         <resource-file src="src/ios/GMImagePicker/GMVideoIcon@2x.png" />
 
-        <resource-file src="src/ios/GMImagePicker/ca.lproj" />
-        <resource-file src="src/ios/GMImagePicker/de.lproj" />
+        <resource-file src="src/ios/GMImagePicker/zh-Hant.lproj" />
         <resource-file src="src/ios/GMImagePicker/en.lproj" />
-        <resource-file src="src/ios/GMImagePicker/es.lproj" />
-        <resource-file src="src/ios/GMImagePicker/fr.lproj" />
-        <resource-file src="src/ios/GMImagePicker/it.lproj" />
-        <resource-file src="src/ios/GMImagePicker/pt.lproj" />
 
         <framework src="Accelerate.framework" />
         <framework src="Security.framework" />
