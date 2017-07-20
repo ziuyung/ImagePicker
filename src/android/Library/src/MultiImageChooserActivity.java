@@ -197,9 +197,9 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         if (maxImages == 0 && isChecked) {
             isChecked = false;
             new AlertDialog.Builder(this)
-                    .setTitle("Maximum " + maxImageCount + " Photos")
-                    .setMessage("You can only select " + maxImageCount + " photos at a time.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setTitle("最多 " + maxImageCount + " 张")
+                    .setMessage("每次最多可选择 " + maxImageCount + " 张照片.")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
@@ -541,7 +541,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                             try {
                                 bmp = this.tryToGetBitmap(file, options, rotate, false);
                             } catch (OutOfMemoryError e2) {
-                                throw new IOException("Unable to load image into memory.");
+                                throw new IOException("未能加载照片到内存.");
                             }
                         }
                     } else {
@@ -560,7 +560,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                                 try {
                                     bmp = this.tryToGetBitmap(file, options, rotate, false);
                                 } catch (OutOfMemoryError e3) {
-                                    throw new IOException("Unable to load image into memory.");
+                                    throw new IOException("未能加载照片到内存.");
                                 }
                             }
                         }

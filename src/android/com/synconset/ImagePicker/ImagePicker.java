@@ -135,7 +135,7 @@ public class ImagePicker extends CordovaPlugin {
             callbackContext.success(res);
 
         } else {
-            callbackContext.error("No images selected");
+            callbackContext.error("未选择照片");
         }
     }
 
