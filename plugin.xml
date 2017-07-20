@@ -72,7 +72,7 @@
         <resource-file src="src/ios/GMImagePicker/GMVideoIcon.png" />
         <resource-file src="src/ios/GMImagePicker/GMVideoIcon@2x.png" />
 
-        <resource-file src="src/ios/GMImagePicker/zh-Hant.lproj" />
+        <resource-file src="src/ios/GMImagePicker/zh-Hans-CN.lproj" />
         <resource-file src="src/ios/GMImagePicker/en.lproj" />
 
         <framework src="Accelerate.framework" />
