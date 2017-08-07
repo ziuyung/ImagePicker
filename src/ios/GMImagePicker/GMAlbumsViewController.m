@@ -131,7 +131,7 @@ static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
     //Register for changes
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 
-    [self performSelector:@selector(initFirst) withObject:nil afterDelay:0.1f];
+    //[self performSelector:@selector(initFirst) withObject:nil afterDelay:0.1f];
 }
 
 -(void)initFirst
