@@ -37,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -659,7 +660,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         */
         private File storeImage(Bitmap bmp, String fileName) throws IOException {
             int index = fileName.lastIndexOf('.');
-            String name = fileName.substring(0, index);
+            String name = String.valueOf(Calendar.getInstance().getTimeInMillis());// fileName.substring(0, index);
             String ext = fileName.substring(index);
             File file = File.createTempFile("tmp_" + name, ext);
             OutputStream outStream = new FileOutputStream(file);
