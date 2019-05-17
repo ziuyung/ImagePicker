@@ -78,6 +78,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.media.ExifInterface;
+
 
 public class MultiImageChooserActivity extends AppCompatActivity implements
         OnItemClickListener,
@@ -506,6 +508,32 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         }
     }
 
+    private Float convertToDegree(String stringDMS){
+        Float result = null;
+        String[] DMS = stringDMS.split(",", 3);
+
+        String[] stringD = DMS[0].split("/", 2);
+        Double D0 = new Double(stringD[0]);
+        Double D1 = new Double(stringD[1]);
+        Double FloatD = D0/D1;
+
+        String[] stringM = DMS[1].split("/", 2);
+        Double M0 = new Double(stringM[0]);
+        Double M1 = new Double(stringM[1]);
+        Double FloatM = M0/M1;
+
+        String[] stringS = DMS[2].split("/", 2);
+        Double S0 = new Double(stringS[0]);
+        Double S1 = new Double(stringS[1]);
+        Double FloatS = S0/S1;
+
+        result = new Float(FloatD + (FloatM/60) + (FloatS/3600));
+
+        return result;
+    };
+
+
+
     private class ResizeImagesTask extends AsyncTask<Set<Entry<String, Integer>>, Void, ArrayList<String>> {
         private Exception asyncTaskError = null;
 
@@ -513,12 +541,44 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         protected ArrayList<String> doInBackground(Set<Entry<String, Integer>>... fileSets) {
             Set<Entry<String, Integer>> fileNames = fileSets[0];
             ArrayList<String> al = new ArrayList<String>();
+            String latlng;
+            String time;
             try {
                 Iterator<Entry<String, Integer>> i = fileNames.iterator();
                 Bitmap bmp;
                 while (i.hasNext()) {
                     Entry<String, Integer> imageInfo = i.next();
                     File file = new File(imageInfo.getKey());
+                    ExifInterface exif = new ExifInterface(imageInfo.getKey());
+                    String attrLATITUDE = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+                    String attrLATITUDE_REF = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
+                    String attrLONGITUDE = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+                    String attrLONGITUDE_REF = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+                    double latitude = 0.0, longitude = 0.0;
+
+                    if((attrLATITUDE !=null)
+                            && (attrLATITUDE_REF !=null)
+                            && (attrLONGITUDE != null)
+                            && (attrLONGITUDE_REF !=null))
+                    {
+                        if(attrLATITUDE_REF.equals("N")){
+                            latitude = convertToDegree(attrLATITUDE);
+                        }
+                        else{
+                            latitude = 0 - convertToDegree(attrLATITUDE);
+                        }
+
+                        if(attrLONGITUDE_REF.equals("E")){
+                            longitude = convertToDegree(attrLONGITUDE);
+                        }
+                        else{
+                            longitude = 0 - convertToDegree(attrLONGITUDE);
+                        }
+
+                    }
+
+                    latlng = latitude+","+longitude;
+                    time = exif.getAttribute(ExifInterface.TAG_DATETIME);
                     int rotate = imageInfo.getValue();
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inSampleSize = 1;
@@ -569,7 +629,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
 
                     if (outputType == OutputType.FILE_URI) {
                         file = storeImage(bmp, file.getName());
-                        al.add(Uri.fromFile(file).toString());
+                        al.add(Uri.fromFile(file).toString()+"|"+latlng+"|"+time);
 
                     } else if (outputType == OutputType.BASE64_STRING) {
                         al.add(getBase64OfImage(bmp));

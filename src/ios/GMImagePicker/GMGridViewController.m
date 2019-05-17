@@ -386,6 +386,10 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
                                         options:nil
                                   resultHandler:^(UIImage *result, NSDictionary *info) {
                                       
+                                      fetch_item.latlng =
+                                      [[[NSString stringWithFormat:@"%f",asset.location.coordinate.latitude] stringByAppendingString:@","] stringByAppendingString:[NSString stringWithFormat:@"%f",asset.location.coordinate.longitude]];
+                                      fetch_item.createDate = asset.creationDate;
+                                      
                                       // Only update the thumbnail if the cell tag hasn't changed. Otherwise, the cell has been re-used.
                                       if (cell.tag == currentTag) {
                                           [cell.imageView setImage:result];
@@ -549,6 +553,7 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     PHAsset *asset = self.assetsFetchResults[indexPath.item];
+
     //GMFetchItem * fetch_item = [dic_asset_fetches objectForKey:[ NSNumber numberWithLong:indexPath.item ]];
     GMFetchItem * fetch_item = [dic_asset_fetches objectForKey:asset];
     

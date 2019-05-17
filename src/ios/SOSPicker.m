@@ -181,7 +181,11 @@ typedef enum : NSUInteger {
         do {
             filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, CDV_PHOTO_PREFIX, i++, @"jpg"];
         } while ([fileMgr fileExistsAtPath:filePath]);
-
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+        NSString *createDate = [formatter stringFromDate:item.createDate];
+        
         NSData* data = nil;
         if (self.width == 0 && self.height == 0) {
             // no scaling required
@@ -191,7 +195,7 @@ typedef enum : NSUInteger {
             } else {
                 if (self.quality == 100) {
                     // no scaling, no downsampling, this is the fastest option
-                    [result_all addObject:item.image_fullsize];
+                    [result_all addObject:[[[[item.image_fullsize stringByAppendingString:@"|"] stringByAppendingString:item.latlng] stringByAppendingString:@"|"] stringByAppendingString:createDate]];
                 } else {
                     // resample first
                     UIImage* image = [UIImage imageNamed:item.image_fullsize];
@@ -200,7 +204,7 @@ typedef enum : NSUInteger {
                         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
                         break;
                     } else {
-                        [result_all addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                        [result_all addObject:[[[[[[NSURL fileURLWithPath:filePath] absoluteString] stringByAppendingString:@"|"] stringByAppendingString:item.latlng] stringByAppendingString:@"|"] stringByAppendingString:createDate]];
                     }
                 }
             }
@@ -217,7 +221,7 @@ typedef enum : NSUInteger {
                 if(self.outputType == BASE64_STRING){
                     [result_all addObject:[data base64EncodedStringWithOptions:0]];
                 } else {
-                    [result_all addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                    [result_all addObject:[[[[[[NSURL fileURLWithPath:filePath] absoluteString] stringByAppendingString:@"|"] stringByAppendingString:item.latlng] stringByAppendingString:@"|"] stringByAppendingString:createDate]];
                 }
             }
         }
